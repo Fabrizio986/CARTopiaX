@@ -12,8 +12,8 @@ env:
 
 jobs:
   build:
-    name: macos-14-apple-clang
-    runs-on: macos-14
+    name: macos-26-apple-clang
+    runs-on: macos-26
     timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
