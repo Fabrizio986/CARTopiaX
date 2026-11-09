@@ -21,6 +21,15 @@ jobs:
       - name: Install prerequisites
         run: brew install libomp open-mpi python@3.9 wget cmake ninja bash tbb qt@5
 
+      # BioDynaMo's CMakeLists.txt expands a cache variable unquoted inside an
+      # if(), which a CMake 4 configure rejects, so use an older CMake.
+      - name: Pin CMake
+        run: |
+          python3.9 -m venv "$RUNNER_TEMP/cmake-venv"
+          "$RUNNER_TEMP/cmake-venv/bin/pip" install cmake==3.31.6
+          echo "$RUNNER_TEMP/cmake-venv/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/cmake-venv/bin/cmake" --version
+
       - name: Build BioDynaMo
         run: |
           git clone --depth 1 -b "$BDM_TAG" https://github.com/vgvassilev/biodynamo "$RUNNER_TEMP/biodynamo"
