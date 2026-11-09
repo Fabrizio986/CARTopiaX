@@ -44,3 +44,15 @@ jobs:
           cmake . -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j"$(sysctl -n hw.ncpu)"
           ctest --test-dir build --output-on-failure
+
+      - name: Run a short simulation
+        run: |
+          source "$RUNNER_TEMP/bdm-build/bin/thisbdm.sh"
+          mkdir "$RUNNER_TEMP/sim" && cd "$RUNNER_TEMP/sim"
+          cat > params.json <<'JSON'
+          {"seed": 42, "total_minutes_to_simulate": 480, "output_csv_interval": 240,
+           "initial_spherical_tumor_radius": 40.0, "treatment": {"0": 50}}
+          JSON
+          "$GITHUB_WORKSPACE/build/CARTopiaX"
+          cat output/final_data.csv
+          test "$(wc -l < output/final_data.csv)" -ge 3
