@@ -1,7 +1,7 @@
 name: macOS
 
 # Experimental: builds BioDynaMo from source on macOS, then CARTopiaX.
-# Runs on pushes to macos-ci, or by hand from the Actions tab.
+# Runs by hand from the Actions tab.
 on:
   workflow_dispatch:
 
